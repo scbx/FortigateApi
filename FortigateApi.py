@@ -123,6 +123,22 @@ class Fortigate:
         return False 
 	#
 	##insert self added methods
+   def GetSystemNTP(self):
+	'''
+	Return the json ntp servers	
+	'''
+        req = self.ApiGet('cmdb/system/ntp')
+        return req.text
+
+
+    def SetSystemNTP(self, type='custom', ntp_list=None):
+        payload = { 'json':{
+            'type':type,
+            'ntpserver':ntp_list
+        }}
+        url = '/cmdb/system/ntp'
+        return self.ApiSet(url=url, data=payload)
+    #
     def GetFwZone(self, name=''):
 	'''
 	Return the json fw zones, when param name is defined it returns the selected object, without name: return all the objects.
