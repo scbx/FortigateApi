@@ -122,6 +122,59 @@ class Fortigate:
                 return True 
         return False 
 	#
+	##insert self added methods
+    def GetFwZone(self, name=''):
+	'''
+	Return the json fw zones, when param name is defined it returns the selected object, without name: return all the objects.
+	
+	Parameters
+	----------
+	name: the fw address  object name (type string)
+	
+	Returns
+	-------
+	Return the json object
+	'''
+	req = self.ApiGet('cmdb/system/zone' + name)
+	return req.text
+
+
+    def AddFwZone(self, name, member):
+	#insert comments here
+        name = str(name)
+	member = str(member)
+	payload = {'json':
+		   {
+			   'name': name.
+			   'interface':[
+				   {
+					   'interface-name':member,
+					   'q_origin_key':member,
+				   }
+			   ]
+		   }
+		  }
+	url = 'cmdb/system/zone'
+	req = self.ApiSet(self.api_url + url, data=repr(payload))
+	retuirn req.status_code
+    #
+   def AddFwFQDNAddress(self, name, associated_interface='', comment=''):
+        name = str(name)
+        associated_interface = str(associated_interface)
+        payload = {'json':
+            {
+                'name': name,
+                'type': 'fqdn',
+                'fqdn': name,
+                'wildcard-fqdn':name,
+                'associated-interface': associated_interface,
+                'comment': comment
+            }
+        }
+        return self.ApiAdd('cmdb/firewall/address/', payload)
+
+    #end self added methods
+	
     def GetVdom(self, name=''):
         '''
         Return the json vdom object, when the param name is defined it returns the selected object, without name: return all the objects.
@@ -770,39 +823,7 @@ class Fortigate:
                         final_return_code = return_code
         return final_return_code
     #
-    def GetFwZone(self, name=''):
-	'''
-	Return the json fw zones, when param name is defined it returns the selected object, without name: return all the objects.
-	
-	Parameters
-	----------
-	name: the fw address  object name (type string)
-	
-	Returns
-	-------
-	Return the json object
-	'''
-	req = self.ApiGet('cmdb/system/zone' + name)
-	return req.text
-    def AddFwZone(self, name, member):
-	#insert comments here
-        name = str(name)
-	member = str(member)
-	payload = {'json':
-		   {
-			   'name': name.
-			   'interface':[
-				   {
-					   'interface-name':member,
-					   'q_origin_key':member,
-				   }
-			   ]
-		   }
-		  }
-	url = 'cmdb/system/zone'
-	req = self.ApiSet(self.api_url + url, data=repr(payload))
-	retuirn req.status_code
-    #
+
     def GetFwAddress(self, name=''):
         '''
         Return the json fw address object, when the param name is defined it returns the selected object, without name: return all the objects.
