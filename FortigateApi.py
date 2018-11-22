@@ -132,6 +132,17 @@ class Fortigate:
 
 
     def SetSystemNTP(self, type='custom', ntp_list=None):
+	'''
+	Set the NTP servers for the SYSTEM
+	
+	Parameters
+	----------
+	name: the ntp address object (type array)
+	
+	Returns
+	-------
+	none
+	'''
         payload = { 'json':{
             'type':type,
             'ntpserver':ntp_list
